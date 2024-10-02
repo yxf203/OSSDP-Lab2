@@ -1,3 +1,4 @@
+package org.example;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -43,41 +44,40 @@ import java.util.Set;
  */
 class Solution6 {
     Set<String>[] s = new Set[105];
-
+    private boolean check(List<List<String>> favoriteCompanies, int x, int y) {
+        for (String com : favoriteCompanies.get(x)) {
+            if (!s[y].contains(com)) {
+                return false;
+            }
+        }
+        return true;
+    }
     public List<Integer> peopleIndexes(List<List<String>> favoriteCompanies) {
-        for (int i = 1; i < 105; ++i) {
+        for (int i = 0; i < 105; ++i) {
             s[i] = new HashSet<String>();
         }
-        int n = favoriteCompanies.size()-1;
+        int n = favoriteCompanies.size();
         List<Integer> ans = new ArrayList<Integer>();
 
         for (int i = 0; i < n; ++i) {
             for (String com : favoriteCompanies.get(i)) {
                 s[i].add(com);
             }
-
-            for (int i = 0; i < n; ++i) {
-                boolean isSub = false;
-                for (int j = 0; j < n; ++j) {
-                    if (i == j) {
-                        continue;
-                    }
-                    isSub |= check(favoriteCompanies, i, j);
+        }
+        for (int i = 0; i < n; ++i) {
+            boolean isSub = false;
+            for (int j = 0; j < n; ++j) {
+                if (i == j) {
+                    continue;
                 }
-                if (isSub) {
-                    ans.add(i);
-                }
+                isSub |= check(favoriteCompanies, i, j);
             }
-
-            return ans;
+            if (!isSub) {
+                ans.add(i);
+            }
         }
 
-        public boolean check(List<List<String>> favoriteCompanies, int x, int y) {
-            for (String com : favoriteCompanies.get(x)) {
-                if (!s[y].contains(com)) {
-                    return false;
-                }
-            }
-            return true;
-        }
+        return ans;
+
     }
+}
